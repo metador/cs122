@@ -4,7 +4,7 @@ import java.util.*;
 public class JDBC
 {
 	public static Connection connection = null;
-	public static String Username = "root", Password = "muk5086";
+	public static String Username = "root", Password = "decodder";
 	public static Scanner stringscan = null;
 	
 	public static void main (String arg[]) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException
@@ -43,7 +43,7 @@ public class JDBC
 	public static void Menu ()
 	{
 		System.out.println("-----------------MENU---------------------");
-		System.out.println("\n\t1. Print All movies grouped by stars");
+		System.out.println("\n\t1. Print All movies of your favourite star");
 		System.out.println("\n\t2. Search for a Movie Star");
 		System.out.println("\n\t3. Search for Movies acted by a Star");
 		System.out.println("\n\t4. Insert a Star");
