@@ -12,7 +12,8 @@ public class JDBC
 		Class.forName("com.mysql.jdbc.Driver").newInstance();
 		
 		connection = DriverManager.getConnection("jdbc:mysql:///moviedb", Username, Password);
-		while(login());
+		//while(login());
+		Menu();
 		
 		Statement select = connection.createStatement();
 		
@@ -31,13 +32,7 @@ public class JDBC
 		Username = stringscan.nextLine();
 		System.out.println("\n\tPassword = ");
 		Password = stringscan.nextLine();
-		try {
-			connection = DriverManager.getConnection("jdbc:mysql:///moviedb", Username, Password);
-		} catch (SQLException e) {
-			return true;
-		}
 		return false;
-			
 	}
 	
 	public static void Menu ()
