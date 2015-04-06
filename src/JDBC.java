@@ -31,7 +31,6 @@ public class JDBC
 		} while (!(exiting.equals("yes") || exiting.equals("y") ));
 		
 		
-		
 		//operation.Select();
 		
 		
@@ -48,7 +47,6 @@ public class JDBC
 		statement = connection.createStatement();
 		String command = "Select * from users where username = '" + Username + "' and password = '" + Password + "'";
 		ResultSet result = statement.executeQuery(command);
-		int columns = result.getMetaData().getColumnCount();
 		if (result.next())
 			return false;
 		else
@@ -58,22 +56,30 @@ public class JDBC
 	public static boolean Menu () throws SQLException
 	{
 
-		System.out.println("-----------------MENU---------------------");
+		System.out.println("\n\n-----------------MENU---------------------");
 		System.out.println("\n\t1. Print All movies of your favourite star");
-
-
 		System.out.println("\n\t2. Enter Star details in the Database");
-		System.out.println("\n\t3. Search for Movies acted by a Star");
-		System.out.println("\n\t4. Insert a Star");
-		System.out.println("\n\t5. Add a new Customer");
-		System.out.println("\n\t6. Delete existing customer");
-		System.out.println("\n\t7. Display the MetaData of Database");
-		System.out.println("\n\t8. Query the Database");
-		System.out.println("\n\t9. Exit the Menu");
-		System.out.println("\n\t10. Exit the program");
+		System.out.println("\n\t3. Add a new Customer");
+		System.out.println("\n\t4. Delete existing customer");
+		System.out.println("\n\t5. Display the MetaData of Database");
+		System.out.println("\n\t6. Query the Database");
+		System.out.println("\n\t7. Exit the Menu");
+		System.out.println("\n\t8. Exit the program");
 		System.out.println("\n\n\t\tEnter your choice :");
 		intscan = new Scanner(System.in);
-		choice = intscan.nextInt();
+		boolean flag = false;
+		do
+		{
+			try{
+			choice = intscan.nextInt();
+			}
+			catch(InputMismatchException i)
+			{
+				flag = false;
+				break;
+			}
+			flag = true;
+		} while (flag == false);
 		
 		switch(choice)
 		{ 
@@ -81,19 +87,25 @@ public class JDBC
 				functions.movieStars();
 				break;
 			case 2:
-				functions.insertStars();
+				functions.addStars();
 				break;
-			case 7: 
+			case 3:
+				functions.addCustomers();
+				break;
+			case 4:
+				functions.deleteCustomers();
+				break;
+			case 5: 
 				metadata = new Metadata(connection);
 				Metadata.print();
 				break;
-			case 8: 
+			case 6: 
 				cmdline = new Query(connection);
 				cmdline.display();
 				break;
-			case 9:
+			case 7:
 				return false;
-			case 10:
+			case 8:
 				return false;
 			default:
 				break;

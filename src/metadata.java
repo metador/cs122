@@ -22,19 +22,17 @@ public class Metadata
 		while (tables.next())
 			tab.push(tables.getString(1));
 		
-		int i = 1, j = 1;
+		int i = 1;
 		while (!tab.isEmpty())
 		{
-			System.out.println("Table " + i + " = " + tab.peek().toUpperCase());
+			System.out.printf(String.format("%-50s %-50s \n","Table " + i, tab.peek().toUpperCase()));
+			System.out.printf(String.format("%100s \n","").replace(" ", "="));
+			System.out.printf(String.format("%-50s %-50s \n","Column Name","Column Type"));
+			System.out.printf(String.format("%100s \n","").replace(" ", "="));
 			ResultSet iter_table = query.executeQuery("desc " + tab.pop());
-			j = 1;
 			while(iter_table.next())
-			{
-				System.out.print("Name of column " + j + " is " + iter_table.getString(1).toUpperCase());
-				System.out.println("\t\t\t\tType of column " + j + " is " + iter_table.getString(2).toUpperCase());
-				j++;
-			}
-			System.out.println();
+				System.out.printf(String.format("%-50s %-50s \n",iter_table.getString(1).toUpperCase(),iter_table.getString(2).toUpperCase()));
+			System.out.printf(String.format("%100s \n\n\n\n","").replace(" ", "="));
 			i++;
 		}
 		
