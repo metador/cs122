@@ -62,7 +62,7 @@ public class JDBC
 		System.out.println("\n\t1. Print All movies of your favourite star");
 
 
-		System.out.println("\n\t2. Search for a Movie Star");
+		System.out.println("\n\t2. Enter Star details in the Database");
 		System.out.println("\n\t3. Search for Movies acted by a Star");
 		System.out.println("\n\t4. Insert a Star");
 		System.out.println("\n\t5. Add a new Customer");
@@ -79,6 +79,9 @@ public class JDBC
 		{ 
 			case 1:
 				functions.movieStars();
+				break;
+			case 2:
+				functions.insertStars();
 				break;
 			case 7: 
 				metadata = new Metadata(connection);
