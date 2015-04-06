@@ -1,18 +1,46 @@
 import java.sql.*;
+import java.util.Scanner;
+
+import com.mysql.jdbc.PreparedStatement;
 
 public class Operat
-{
+{ 	
+	private static Connection connection;
 	private static Statement query = null;
+	private static Scanner name;
 	
-	public Operat(Statement query_main) 
+	
+	public Operat( Connection connection) 
 	{
-		query = query_main;
+		this.connection = connection;
+	//	query = query_main;
 	}
 
 	
-	public static void Select() throws SQLException
+	public static void movieStars() throws SQLException
 	{
-		ResultSet result = query.executeQuery("Select * from stars");
+		System.out.println("Which star do you need information about: ");
+		query= connection.createStatement();
+		name = new Scanner(System.in);
+	System.out.println(" Enter First name ");
+	String first_name= name.next();
+	System.out.println(" Enter Last name ");
+	String last_name= name.next();
+ //===============================================================================//
+	// handel cases //
+	
+//=======================================================================================//
+	
+	PreparedStatement getmovies= (PreparedStatement) connection.prepareStatement("select movies.title from movies join stars_in_movies on movies.id=stars_in_movies.movie_id  where stars_in_movies.star_id in (select stars.id from stars where stars.first_name=? or stars.last_name=?) ");
+	getmovies.setString(1, first_name);
+	getmovies.setString(2, last_name);
+	ResultSet result=getmovies.executeQuery();
+	
+	while(result.next()){
+		System.out.println("Movie " + result.getString("title"));
+	}
+	
+	/*	ResultSet result = query.executeQuery("Select * from star where first_name=?");
 		
 		System.out.println("The results of the query: ");
 		ResultSetMetaData metadata = result.getMetaData();
@@ -28,6 +56,6 @@ public class Operat
 			System.out.println("DOB = " + result.getString(4));
 			System.out.println("Photo URL = " + result.getString(5));
 			System.out.println();
-		}
+		}*/
 	}
 }
