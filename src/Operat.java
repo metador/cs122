@@ -36,11 +36,11 @@ public class Operat
 	System.out.println(" Enter Last name ");
 	String last_name= name.next();
  //===============================================================================//
-	// handel cases //
+	// handle cases //
 	
 //=======================================================================================//
 	
-	PreparedStatement getmovies= (PreparedStatement) connection.prepareStatement("select * from movies join stars_in_movies on movies.id=stars_in_movies.movie_id  where stars_in_movies.star_id in (select stars.id from stars where stars.first_name=? or stars.last_name=?) ");
+	PreparedStatement getmovies= (PreparedStatement) connection.prepareStatement("select distinct * from movies join stars_in_movies on movies.id=stars_in_movies.movie_id  where stars_in_movies.star_id in (select stars.id from stars where stars.first_name=? or stars.last_name=?) ");
 	getmovies.setString(1, first_name);
 	getmovies.setString(2, last_name);
 	ResultSet result=getmovies.executeQuery();
@@ -48,7 +48,7 @@ public class Operat
 	System.out.printf(String.format("%-50s %-8s %-50s %-200s %-200s \n","Title","Year","Director","Banner Url","Trailer Url"));
 	System.out.printf(String.format("%508s \n\n","").replace(" ", "="));
 	while(result.next()){
-		System.out.printf(String.format("%-50s %-8d %-50s %-200s %-200s \n", result.getString("title"),result.getInt("year"),result.getString("director"),result.getString("banner_url"),result.getString("trailer_url")) );
+		System.out.printf(String.format("%-50s %-8s %-50s %-200s %-200s \n", result.getString("title"),result.getString("year"),result.getString("director"),result.getString("banner_url"),result.getString("trailer_url")) );
 	}
 	System.out.printf(String.format("\n%508s \n\n","").replace(" ", "="));
 

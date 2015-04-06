@@ -5,7 +5,7 @@ public class JDBC
 {
 	public static Connection connection = null;
 
-	public static String Username = "root", Password = "decodder";
+	public static String Username = "root", Password = "muk5086";
 	public static Scanner stringscan = null;
 	public static Scanner intscan = null;
 	public static int choice = 0;
@@ -56,10 +56,8 @@ public class JDBC
 	public static boolean Menu () throws SQLException
 	{
 
-		System.out.println("-----------------MENU---------------------");
+		System.out.println("\n\n-----------------MENU---------------------");
 		System.out.println("\n\t1. Print All movies of your favourite star");
-
-
 		System.out.println("\n\t2. Enter Star details in the Database");
 		System.out.println("\n\t3. Search for Movies acted by a Star");
 		System.out.println("\n\t4. Insert a Star");
@@ -71,7 +69,19 @@ public class JDBC
 		System.out.println("\n\t10. Exit the program");
 		System.out.println("\n\n\t\tEnter your choice :");
 		intscan = new Scanner(System.in);
-		choice = intscan.nextInt();
+		boolean flag = false;
+		do
+		{
+			try{
+			choice = intscan.nextInt();
+			}
+			catch(InputMismatchException i)
+			{
+				flag = false;
+				break;
+			}
+			flag = true;
+		} while (flag == false);
 		
 		switch(choice)
 		{ 
