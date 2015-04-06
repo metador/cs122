@@ -31,7 +31,6 @@ public class JDBC
 		} while (!(exiting.equals("yes") || exiting.equals("y") ));
 		
 		
-		
 		//operation.Select();
 		
 		
@@ -48,7 +47,6 @@ public class JDBC
 		statement = connection.createStatement();
 		String command = "Select * from users where username = '" + Username + "' and password = '" + Password + "'";
 		ResultSet result = statement.executeQuery(command);
-		int columns = result.getMetaData().getColumnCount();
 		if (result.next())
 			return false;
 		else
