@@ -5,7 +5,7 @@ public class JDBC
 {
 	public static Connection connection = null;
 
-	public static String Username = "root", Password = "muk5086";
+	public static String Username = "root", Password = "decodder";
 	public static Scanner stringscan = null;
 	public static Scanner intscan = null;
 	public static int choice = 0;
@@ -29,6 +29,11 @@ public class JDBC
 			exiting = stringscan.nextLine().toLowerCase();
 			
 		} while (!(exiting.equals("yes") || exiting.equals("y") ));
+		
+		
+		//operation.Select();
+		
+		
 	}
 	
 	public static boolean login() throws SQLException
