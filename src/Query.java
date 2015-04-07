@@ -20,10 +20,14 @@ public class Query
 		stringscan = new Scanner(System.in);
 		String command = stringscan.nextLine();
 		ResultSet result = null;
+		int rows = 0;
 		PreparedStatement ps = (PreparedStatement) connection.prepareStatement(command);
+		command = command.toUpperCase();
 		try {
-			ps.execute();
-			System.out.println("Query Successfully Executed...!!");
+			if (command.contains("SELECT"))
+				ps.executeQuery();
+			else
+				rows = ps.executeUpdate();
 		} 
 		catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -31,7 +35,6 @@ public class Query
 		}
 		
 		result = ps.getResultSet();
-		command = command.toUpperCase();
 		int width = 0;
 		if (command.contains("SELECT"))
 		{
@@ -60,7 +63,7 @@ public class Query
 		else
 		{
 			System.out.println();
-			System.out.println(result.toString());
+			System.out.println(rows + " rows updated..!");
 		}
 		
 	}

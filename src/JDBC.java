@@ -63,6 +63,7 @@ public class JDBC
 		System.out.println("\n\n\t\tEnter your choice :");
 		intscan = new Scanner(System.in);
 		boolean flag = false;
+		choice=0;
 		do
 		{
 			try{
