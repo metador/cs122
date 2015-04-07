@@ -16,23 +16,29 @@ public class Query
 
 	public void display() throws SQLException
 	{
-		System.out.println("\n\tPlease Enter the SQL Query :");
-		stringscan = new Scanner(System.in);
-		String command = stringscan.nextLine();
+		
 		ResultSet result = null;
 		int rows = 0;
-		PreparedStatement ps = (PreparedStatement) connection.prepareStatement(command);
-		command = command.toUpperCase();
+		boolean flag = false;
+		String command = null;
+		PreparedStatement ps = null;
+		do{
+			System.out.println("\n\tPlease Enter the SQL Query :");
+			stringscan = new Scanner(System.in);
+			command = stringscan.nextLine();
+			ps = (PreparedStatement) connection.prepareStatement(command);
+			command = command.toUpperCase();
 		try {
 			if (command.contains("SELECT"))
 				ps.executeQuery();
 			else
 				rows = ps.executeUpdate();
+			flag = true;
 		} 
 		catch (SQLException e) {
 			System.out.println(e.getMessage());
-			return;
-		}
+			flag = false;
+		}} while (flag == false);
 		
 		result = ps.getResultSet();
 		int width = 0;

@@ -29,6 +29,7 @@ public class JDBC
 			exiting = stringscan.nextLine().toLowerCase();
 			
 		} while (!(exiting.equals("yes") || exiting.equals("y") ));
+		System.exit(0);
 	}
 	
 	public static boolean login() throws SQLException
@@ -102,8 +103,9 @@ public class JDBC
 			case 7:
 				return false;
 			case 8:
-				return false;
+				System.exit(0);
 			default:
+				System.out.println("Wrong choice selected. Please Enter a correct choice");
 				break;
 		}
 		return true;
