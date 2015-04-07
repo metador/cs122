@@ -2,6 +2,7 @@ import java.sql.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -24,28 +25,49 @@ public class Operat
 	public static void movieStars() throws SQLException
 	{
 		System.out.println("Which star do you need information about: ");
+		ResultSet result=null;
 		query= connection.createStatement();
+		PreparedStatement getmovies;
+		int id =0;
 		name = new Scanner(System.in);
-	System.out.println(" Enter First name ");
-	String first_name= name.next();
-/*	String firstLetter = first_name.substring(0,1);
-	String rem = first_name.substring(1,first_name.length());
-	firstLetter.toUpperCase();
-	rem.toLowerCase();
-	first_name=firstLetter.concat(rem); */
-	System.out.println(" Enter Last name ");
-	String last_name= name.next();
+	System.out.println(" Enter First name or Star id: ");
+	boolean flag_id=true;
+	try{
+	id = name.nextInt();
+	}catch(InputMismatchException i){
+		flag_id=false;
+	}
 	
-	PreparedStatement getmovies= (PreparedStatement) connection.prepareStatement("select distinct * from movies join stars_in_movies on movies.id=stars_in_movies.movie_id  where stars_in_movies.star_id in (select stars.id from stars where stars.first_name=? or stars.last_name=?) ");
+	if(flag_id){
+		getmovies= (PreparedStatement) connection.prepareStatement("select distinct * from movies join stars_in_movies on movies.id=stars_in_movies.movie_id  where stars_in_movies.star_id in (select stars.id from stars where stars.id=? ) ");
+		getmovies.setInt(1, id);
+	}else{
+	String first_name= name.nextLine();
+
+	System.out.println(" Enter Last name ");
+	String last_name= name.nextLine();
+	
+	getmovies= (PreparedStatement) connection.prepareStatement("select distinct * from movies join stars_in_movies on movies.id=stars_in_movies.movie_id  where stars_in_movies.star_id in (select stars.id from stars where stars.first_name=? and stars.last_name=?) ");
 	getmovies.setString(1, first_name);
 	getmovies.setString(2, last_name);
 //	getmovies.setString(3, first_name);
 //	getmovies.setString(4, last_name);
-	ResultSet result=getmovies.executeQuery();
+    result=getmovies.executeQuery();
+    if(!result.next()){
+    	getmovies= (PreparedStatement) connection.prepareStatement("select distinct * from movies join stars_in_movies on movies.id=stars_in_movies.movie_id  where stars_in_movies.star_id in (select stars.id from stars where stars.first_name=? or stars.last_name=?) ");
+    	getmovies.setString(1, first_name);
+    	getmovies.setString(2, last_name);
+    	result=getmovies.executeQuery();
+     }
+	}
+	
+
+	
 	System.out.printf(String.format("%508s \n","").replace(" ", "="));
 	System.out.printf(String.format("%-50s%-8s%-50s%-200s%-200s\n","Title","Year","Director","Banner Url","Trailer Url"));
 	System.out.printf(String.format("%508s \n\n","").replace(" ", "="));
-	
+if(result.next()){
+	result.beforeFirst();
 	while(result.next()){
 
 		String banner=result.getString("banner_url");
@@ -56,7 +78,10 @@ public class Operat
 		trailer=trailer.replaceAll(space," ");
 		System.out.printf(String.format("%-50s%-8s%-50s%-200s%-200s\n", result.getString("title"),result.getString("year"),result.getString("director"),banner,trailer) );
 
-	}
+	}}
+    else{
+	System.out.println("NO RECORDS FOUND");
+     }
 	System.out.printf(String.format("\n%508s \n\n","").replace(" ", "="));
 
 	}
@@ -199,6 +224,7 @@ public class Operat
 			 System.out.println("");
 			 System.out.println("========================No records found with the information you provided========================");
 			 System.out.println("============================Please Enter correct credit card information======================== ");
+			 System.out.println();
 			 bankcheckflag=true;
 		   }
 		 }while(bankcheckflag);
