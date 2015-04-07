@@ -19,20 +19,25 @@ public class Query
 		System.out.println("\n\tPlease Enter the SQL Query :");
 		stringscan = new Scanner(System.in);
 		String command = stringscan.nextLine();
-		command = command.toUpperCase();
+		//command = command.toUpperCase();
 		Statement query = connection.createStatement();
 		ResultSet result = null;
 		try {
+		   if(command.contains("SELECT"))
 			result = query.executeQuery(command);
+		   else
+			    query.executeUpdate(command);   
 		} catch (SQLException e) {
 			System.out.println("Illegal SQL statement...!!");
 			return;
 		}
 		
-		int columns = result.getMetaData().getColumnCount();
+		int columns = 0;
 		int width = 0;
 		if (command.contains("SELECT"))
 		{
+			columns = result.getMetaData().getColumnCount();
+			width = 0;
 			ResultSetMetaData metadata = result.getMetaData();
 			for (int i=1 ; i<=metadata.getColumnCount(); i++)
 				width += metadata.getColumnDisplaySize(i);
@@ -50,12 +55,12 @@ public class Query
 		}
 		else
 		{
-			while (result.next())
+			/*while (result.next())
 			{
 				System.out.println();
 				for (int i=1; i<=columns; i++)
 					System.out.printf("%15s", result.getString(i));
-			}
+			}*/
 		}
 		
 	}
