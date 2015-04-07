@@ -1,7 +1,7 @@
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Stack;
+
+import com.mysql.jdbc.PreparedStatement;
 
 public class Query 
 {
@@ -19,17 +19,19 @@ public class Query
 		System.out.println("\n\tPlease Enter the SQL Query :");
 		stringscan = new Scanner(System.in);
 		String command = stringscan.nextLine();
-		command = command.toUpperCase();
-		Statement query = connection.createStatement();
 		ResultSet result = null;
+		PreparedStatement ps = (PreparedStatement) connection.prepareStatement(command);
 		try {
-			result = query.executeQuery(command);
-		} catch (SQLException e) {
-			System.out.println("Illegal SQL statement...!!");
+			ps.execute();
+			System.out.println("Query Successfully Executed...!!");
+		} 
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
 			return;
 		}
 		
-		int columns = result.getMetaData().getColumnCount();
+		result = ps.getResultSet();
+		command = command.toUpperCase();
 		int width = 0;
 		if (command.contains("SELECT"))
 		{
@@ -44,7 +46,7 @@ public class Query
 			{
 				while (result.next())
 				{
-					for (int i=1; i<=columns; i++)
+					for (int i=1; i<=metadata.getColumnCount(); i++)
 						System.out.printf("%-" + metadata.getColumnDisplaySize(i) + "s", result.getString(i));
 					System.out.println();
 				}
@@ -57,12 +59,8 @@ public class Query
 		}
 		else
 		{
-			while (result.next())
-			{
-				System.out.println();
-				for (int i=1; i<=columns; i++)
-					System.out.printf("%15s", result.getString(i));
-			}
+			System.out.println();
+			System.out.println(result.toString());
 		}
 		
 	}
