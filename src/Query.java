@@ -40,11 +40,18 @@ public class Query
 			for (int i=1 ; i<=metadata.getColumnCount(); i++)
 				System.out.printf("%-" + metadata.getColumnDisplaySize(i) + "s", metadata.getColumnLabel(i).toUpperCase());
 			System.out.printf(String.format("\n%" + width + "s \n","").replace(" ", "="));
-			while (result.next())
+			if (result.next())
 			{
-				for (int i=1; i<=columns; i++)
-					System.out.printf("%-" + metadata.getColumnDisplaySize(i) + "s", result.getString(i));
-				System.out.println();
+				while (result.next())
+				{
+					for (int i=1; i<=columns; i++)
+						System.out.printf("%-" + metadata.getColumnDisplaySize(i) + "s", result.getString(i));
+					System.out.println();
+				}
+			}
+			else
+			{
+				System.out.println("NO RECORDS FOUND");
 			}
 			System.out.printf(String.format("%" + width + "s \n","").replace(" ", "="));
 		}
