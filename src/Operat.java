@@ -29,20 +29,23 @@ public class Operat
 		query= connection.createStatement();
 		PreparedStatement getmovies;
 		int id =0;
+		String first_name="";
 		name = new Scanner(System.in);
 	System.out.println(" Enter First name or Star id: ");
 	boolean flag_id=true;
 	try{
-	id = name.nextInt();
-	}catch(InputMismatchException i){
+	first_name = name.nextLine();
+	id = Integer.parseInt(first_name);
+	}catch(NumberFormatException i){
 		flag_id=false;
 	}
 	
 	if(flag_id){
 		getmovies= (PreparedStatement) connection.prepareStatement("select distinct * from movies join stars_in_movies on movies.id=stars_in_movies.movie_id  where stars_in_movies.star_id in (select stars.id from stars where stars.id=? ) ");
 		getmovies.setInt(1, id);
+		result=getmovies.executeQuery();
 	}else{
-	String first_name= name.nextLine();
+	//first_name= name.nextLine();
 
 	System.out.println(" Enter Last name ");
 	String last_name= name.nextLine();
@@ -53,6 +56,7 @@ public class Operat
 //	getmovies.setString(3, first_name);
 //	getmovies.setString(4, last_name);
     result=getmovies.executeQuery();
+    
     if(!result.next()){
     	getmovies= (PreparedStatement) connection.prepareStatement("select distinct * from movies join stars_in_movies on movies.id=stars_in_movies.movie_id  where stars_in_movies.star_id in (select stars.id from stars where stars.first_name=? or stars.last_name=?) ");
     	getmovies.setString(1, first_name);
