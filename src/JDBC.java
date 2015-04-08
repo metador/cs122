@@ -1,3 +1,8 @@
+//------------------ Project By : --------------------
+//--- 1. Mohammed    ,    Student ID = 45604908-------
+//----2. Melwin James,    Student ID = 41401821------
+
+
 import java.sql.*;
 import java.util.*;
 
@@ -5,7 +10,7 @@ public class JDBC
 {
 	public static Connection connection = null;
 
-	public static String Username = "root", Password = "decodder";
+	public static String Username = "root", Password = "muk5086";
 	public static Scanner stringscan = null;
 	public static Scanner intscan = null;
 	public static int choice = 0;
@@ -29,11 +34,7 @@ public class JDBC
 			exiting = stringscan.nextLine().toLowerCase();
 			
 		} while (!(exiting.equals("yes") || exiting.equals("y") ));
-		
-		
-		//operation.Select();
-		
-		
+		System.exit(0);
 	}
 	
 	public static boolean login() throws SQLException
@@ -107,8 +108,9 @@ public class JDBC
 			case 7:
 				return false;
 			case 8:
-				return false;
+				System.exit(0);
 			default:
+				System.out.println("Wrong choice selected. Please Enter a correct choice");
 				break;
 		}
 		return true;

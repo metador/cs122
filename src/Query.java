@@ -1,7 +1,7 @@
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Stack;
+
+import com.mysql.jdbc.PreparedStatement;
 
 public class Query 
 {
@@ -16,28 +16,34 @@ public class Query
 
 	public void display() throws SQLException
 	{
-		System.out.println("\n\tPlease Enter the SQL Query :");
-		stringscan = new Scanner(System.in);
-		String command = stringscan.nextLine();
-		//command = command.toUpperCase();
-		Statement query = connection.createStatement();
-		ResultSet result = null;
-		try {
-		   if(command.contains("SELECT"))
-			result = query.executeQuery(command);
-		   else
-			    query.executeUpdate(command);   
-		} catch (SQLException e) {
-			System.out.println("Illegal SQL statement...!!");
-			return;
-		}
 		
-		int columns = 0;
+		ResultSet result = null;
+		int rows = 0;
+		boolean flag = false;
+		String command = null;
+		PreparedStatement ps = null;
+		do{
+			System.out.println("\n\tPlease Enter the SQL Query :");
+			stringscan = new Scanner(System.in);
+			command = stringscan.nextLine();
+			ps = (PreparedStatement) connection.prepareStatement(command);
+			command = command.toUpperCase();
+		try {
+			if (command.contains("SELECT"))
+				ps.executeQuery();
+			else
+				rows = ps.executeUpdate();
+			flag = true;
+		} 
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+			flag = false;
+		}} while (flag == false);
+		
+		result = ps.getResultSet();
 		int width = 0;
 		if (command.contains("SELECT"))
 		{
-			columns = result.getMetaData().getColumnCount();
-			width = 0;
 			ResultSetMetaData metadata = result.getMetaData();
 			for (int i=1 ; i<=metadata.getColumnCount(); i++)
 				width += metadata.getColumnDisplaySize(i);
@@ -49,7 +55,7 @@ public class Query
 			{
 				while (result.next())
 				{
-					for (int i=1; i<=columns; i++)
+					for (int i=1; i<=metadata.getColumnCount(); i++)
 						System.out.printf("%-" + metadata.getColumnDisplaySize(i) + "s", result.getString(i));
 					System.out.println();
 				}
@@ -62,12 +68,8 @@ public class Query
 		}
 		else
 		{
-			/*while (result.next())
-			{
-				System.out.println();
-				for (int i=1; i<=columns; i++)
-					System.out.printf("%15s", result.getString(i));
-			}*/
+			System.out.println();
+			System.out.println(rows + " rows updated..!");
 		}
 		
 	}
