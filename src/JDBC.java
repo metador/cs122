@@ -10,7 +10,7 @@ public class JDBC
 {
 	public static Connection connection = null;
 
-	public static String Username = "root", Password = "muk5086";
+	public static String Username = "root", Password = "decodder";
 	public static Scanner stringscan = null;
 	public static Scanner intscan = null;
 	public static int choice = 0;
@@ -27,7 +27,7 @@ public class JDBC
 		functions = new Operat(connection);
 		do
 		{
-			//while(login());
+			while(login());
 			while(Menu());
 			System.out.println("\n\tDo you want to Exit the program? ['Yes' or 'No'] : ");
 			stringscan = new Scanner(System.in);
@@ -46,7 +46,7 @@ public class JDBC
 		System.out.println("\n\tPassword = ");
 		Password = stringscan.nextLine();
 		statement = connection.createStatement();
-		String command = "Select * from users where username = '" + Username + "' and password = '" + Password + "'";
+		String command = "Select * from employees where email = '" + Username + "' and password = '" + Password + "'";
 		ResultSet result = statement.executeQuery(command);
 		if (result.next())
 			return false;
@@ -64,8 +64,9 @@ public class JDBC
 		System.out.println("\n\t4. Delete existing customer");
 		System.out.println("\n\t5. Display the MetaData of Database");
 		System.out.println("\n\t6. Query the Database");
-		System.out.println("\n\t7. Exit the Menu");
-		System.out.println("\n\t8. Exit the program");
+		System.out.println("\n\t7. Add movie to database");
+		System.out.println("\n\t8. Exit the Menu");
+		System.out.println("\n\t9. Exit the program");
 		System.out.println("\n\n\t\tEnter your choice :");
 		intscan = new Scanner(System.in);
 		boolean flag = false;
@@ -106,8 +107,10 @@ public class JDBC
 				cmdline.display();
 				break;
 			case 7:
-				return false;
+				functions.addMovies();
 			case 8:
+				return false;
+			case 9:
 				System.exit(0);
 			default:
 				System.out.println("Wrong choice selected. Please Enter a correct choice");
